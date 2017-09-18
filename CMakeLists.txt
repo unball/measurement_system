@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosserial_arduino
   rosserial_client
   joy
+  vision
 )
 
 add_message_files (DIRECTORY msg FILES
