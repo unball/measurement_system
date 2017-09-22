@@ -6,19 +6,15 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
-  rospy
-  rosserial_arduino
-  rosserial_client
-  joy
-  vision
 )
 
 add_message_files (DIRECTORY msg FILES
-  measurement_msg.msg
-)
+  measurement_msg.msg)
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
+  CATKIN_DEPENDS
+    message_runtime
 )
 
 catkin_install_python(PROGRAMS scripts/kalman.py
