@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(measurement_system)
 
+find_package(catkin REQUIRED COMPONENTS
+  std_msgs
+  message_generation
+  vision
+  rospy
+)
+
+
 add_message_files(
    FILES
    measurement_msg.msg
@@ -13,8 +21,6 @@ generate_messages(
 
 catkin_package(
   LIBRARIES measurement_system
-  CATKIN_DEPENDS vision
-  DEPENDS system_lib
 )
 
 install(PROGRAMS
