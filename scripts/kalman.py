@@ -25,7 +25,7 @@ def start():
     rospy.init_node('measurement_system', anonymous=True)
     rate = rospy.Rate(10)
 
-    pub = rospy.Publisher('measurement_system_topic', VisionMessage, queue_size = 10)
+    pub = rospy.Publisher('measurement_system_topic', measurement_msg, queue_size = 10)
     rospy.Subscriber('pixel_to_metric_conversion_topic', VisionMessage, subscriber)
 
     try:
