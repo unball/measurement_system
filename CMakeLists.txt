@@ -35,5 +35,5 @@ generate_messages(DEPENDENCIES std_msgs)
 catkin_package(
 )
 
-catkin_install_python(PROGRAMS scripts/measurement_system.py
+catkin_install_python(PROGRAMS scripts/measurement.py
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
