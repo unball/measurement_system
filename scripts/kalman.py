@@ -20,7 +20,7 @@ def subscriber(data):
 
 def start():
     global kalman
-    kalman = VisionMessage()
+    kalman = measurement_msg()
 
     rospy.init_node('measurement_system', anonymous=True)
     rate = rospy.Rate(10)
