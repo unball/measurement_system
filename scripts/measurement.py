@@ -7,8 +7,8 @@ from vision.msg import VisionMessage
 
 
 def estimator(data):
-    #movingAvg(data)
-    unityGain(data)
+    movingAvg(data)
+    # unityGain(data)
 
 
 
@@ -18,12 +18,10 @@ def movingAvg(data):
         estimation.x[i] = (alpha)*estimation.x[i] + (1-alpha)*data.x[i]
         estimation.y[i] = (alpha)*estimation.y[i] + (1-alpha)*data.y[i]
         estimation.th[i] = (alpha)*estimation.th[i] + (1-alpha)*data.th[i]
-        pass
-
+    
     estimation.ball_x = (alpha)*estimation.ball_x + (1-alpha)*data.ball_x
     estimation.ball_y = (alpha)*estimation.ball_y + (1-alpha)*data.ball_y
 
-    pass
 
 
 def unityGain(data):
@@ -58,4 +56,4 @@ if __name__ == '__main__':
     try:
         start()
     except rospy.ROSInterruptException:
-        pass
+        exit(1)
