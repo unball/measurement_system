@@ -14,7 +14,7 @@ def estimator(data):
 
 def movingAvg(data):
     alpha = 0.3
-    for i in xrange(0,2):
+    for i in range(3):
         estimation.x[i] = (alpha)*estimation.x[i] + (1-alpha)*data.x[i]
         estimation.y[i] = (alpha)*estimation.y[i] + (1-alpha)*data.y[i]
         estimation.th[i] = (alpha)*estimation.th[i] + (1-alpha)*data.th[i]
