@@ -34,14 +34,14 @@ def unityGain(data):
 
 def start():
     global estimation
-    estimation = VisionMessage()
+    estimation = measurement_msg()
 
     rospy.init_node('measurement_system', anonymous=True)
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(30)
 
     pub = rospy.Publisher('measurement_system_topic', measurement_msg, queue_size = 10)
     rospy.Subscriber('pixel_to_metric_conversion_topic', VisionMessage, estimator)
-
+    print('Measurement node started')
     try:
        while not rospy.is_shutdown():
         pub.publish(estimation)
