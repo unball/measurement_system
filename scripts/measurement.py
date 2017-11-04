@@ -32,7 +32,8 @@ def movingAvg(data):
     for i in range(3):
         estimation.x[i] = (alpha)*estimation.x[i] + (1-alpha)*data.x[i]
         estimation.y[i] = (alpha)*estimation.y[i] + (1-alpha)*data.y[i]
-        estimation.th[i] = (alpha)*estimation.th[i] + (1-alpha)*data.th[i]
+        estimation.th[i] = data.th[i]
+
     
     estimation.ball_x = (alpha)*estimation.ball_x + (1-alpha)*data.ball_x
     estimation.ball_y = (alpha)*estimation.ball_y + (1-alpha)*data.ball_y
