@@ -21,11 +21,14 @@ def estimator(data):
             local.x[i]=estimation.x[i]
             local.y[i]=estimation.y[i]
             local.th[i]=estimation.th[i]
-    
     movingAvg(local)
-    #unityGain(local)
+    # unityGain(local)
 
+def ballPrediction(data):
+    estimation.ball_x_pred = 2*(data.ball_x) - estimation.ball_x
+    estimation.ball_y_pred = 2*(data.ball_y) - estimation.ball_y
 
+    pass
 
 def movingAvg(data):
     alpha = 0.4
@@ -34,10 +37,14 @@ def movingAvg(data):
         estimation.y[i] = (alpha)*estimation.y[i] + (1-alpha)*data.y[i]
         estimation.th[i] = data.th[i]
 
-    
-    estimation.ball_x = (alpha)*estimation.ball_x + (1-alpha)*data.ball_x
-    estimation.ball_y = (alpha)*estimation.ball_y + (1-alpha)*data.ball_y
+    # estimation.ball_x = (alpha)*estimation.ball_x + (1-alpha)*data.ball_x
+    # estimation.ball_y = (alpha)*estimation.ball_y + (1-alpha)*data.ball_y
 
+    ballPrediction(data)
+
+    estimation.ball_x = data.ball_x
+    estimation.ball_y = data.ball_y
+    
 
 
 def unityGain(data):
@@ -46,11 +53,15 @@ def unityGain(data):
     estimation.th = data.th
     estimation.ball_x = data.ball_x
     estimation.ball_y = data.ball_y
+    estimation.ball_x_pred = data.ball_x
+    estimation.ball_y_pred = data.ball_y
 
 
 def start():
     global estimation
+    global vel_x, vel_y
     estimation = measurement_msg()
+
 
     rospy.init_node('measurement_system', anonymous=True)
     rate = rospy.Rate(30)
