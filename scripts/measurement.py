@@ -14,7 +14,7 @@ class DisasseblyMessage(object):
 
 
 
-def estimator(data, last_estimation):
+def estimator(data):
     local=DisasseblyMessage(data)
     for i in xrange(6):
         if not data.found[i] :
@@ -50,15 +50,13 @@ def unityGain(data):
 
 def start():
     global estimation
-    global last_estimation
-    last_estimation = measurement_msg()
     estimation = measurement_msg()
 
     rospy.init_node('measurement_system', anonymous=True)
     rate = rospy.Rate(30)
 
     pub = rospy.Publisher('measurement_system_topic', measurement_msg, queue_size = 10)
-    rospy.Subscriber('pixel_to_metric_conversion_topic', VisionMessage, estimator, last_estimation)
+    rospy.Subscriber('pixel_to_metric_conversion_topic', VisionMessage, estimator)
     print('Measurement node started')
     try:
        while not rospy.is_shutdown():
