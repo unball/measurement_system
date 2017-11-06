@@ -6,11 +6,11 @@ from vision.msg import VisionMessage
 
 class DisasseblyMessage(object):
     def __init__(self, message):
-        self.x=list(message.x)        
-        self.y=list(message.y)        
+        self.x=list(message.x)
+        self.y=list(message.y)
         self.th=list(message.th)
         self.ball_x=message.ball_x
-        self.ball_y=message.ball_y      
+        self.ball_y=message.ball_y
 
 
 
@@ -25,8 +25,9 @@ def estimator(data):
     # unityGain(local)
 
 def ballPrediction(data):
-    estimation.ball_x_pred = 2*(data.ball_x) - estimation.ball_x
-    estimation.ball_y_pred = 2*(data.ball_y) - estimation.ball_y
+    k = 10
+    estimation.ball_x_pred = (data.ball_x - estimation.ball_x)*k + data.ball_x
+    estimation.ball_y_pred = (data.ball_y - estimation.ball_y)*k + data.ball_y
 
     pass
 
@@ -44,7 +45,7 @@ def movingAvg(data):
 
     estimation.ball_x = data.ball_x
     estimation.ball_y = data.ball_y
-    
+
 
 
 def unityGain(data):
