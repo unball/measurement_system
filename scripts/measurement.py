@@ -6,11 +6,11 @@ from vision.msg import VisionMessage
 
 class DisasseblyMessage(object):
     def __init__(self, message):
-        self.x=list(message.x)        
-        self.y=list(message.y)        
+        self.x=list(message.x)
+        self.y=list(message.y)
         self.th=list(message.th)
         self.ball_x=message.ball_x
-        self.ball_y=message.ball_y      
+        self.ball_y=message.ball_y
 
 
 
@@ -21,7 +21,7 @@ def estimator(data):
             local.x[i]=estimation.x[i]
             local.y[i]=estimation.y[i]
             local.th[i]=estimation.th[i]
-    
+
     movingAvg(local)
     #unityGain(local)
 
@@ -34,7 +34,7 @@ def movingAvg(data):
         estimation.y[i] = (alpha)*estimation.y[i] + (1-alpha)*data.y[i]
         estimation.th[i] = data.th[i]
 
-    
+
     estimation.ball_x = (alpha)*estimation.ball_x + (1-alpha)*data.ball_x
     estimation.ball_y = (alpha)*estimation.ball_y + (1-alpha)*data.ball_y
 
@@ -55,7 +55,7 @@ def start():
     rospy.init_node('measurement_system', anonymous=True)
     rate = rospy.Rate(30)
 
-    pub = rospy.Publisher('measurement_system_topic', measurement_msg, queue_size = 10)
+    pub = rospy.Publisher('measurement_system_topic', measurement_msg, queue_size = 1)
     rospy.Subscriber('pixel_to_metric_conversion_topic', VisionMessage, estimator)
     print('Measurement node started')
     try:
