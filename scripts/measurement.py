@@ -3,6 +3,8 @@
 import rospy
 from measurement_system.msg import measurement_msg
 from vision.msg import VisionMessage
+import planar
+from math import fabs
 
 class DisassemblyMessage(object):
     def __init__(self, message):
@@ -21,15 +23,33 @@ def estimator(data):
             local.x[i] = estimation.x[i]
             local.y[i] = estimation.y[i]
             local.th[i] = estimation.th[i]
-    
+
     movingAvg(local)
     ballPredictor(local)
+    estimation.ball_x_walls, estimation.ball_y_walls = wallsPrediction(local)
     # unityGain(local)
+    
 
     prev_estimation.ball_x = estimation.ball_x
     prev_estimation.ball_y = estimation.ball_y
 
 
+def wallsPrediction(data):
+    speed_vector = planar.Vec2(estimation.ball_x_pred - data.ball_x,estimation.ball_y_pred - data.ball_y)
+    speed_vector = planar.Vec2.normalized(speed_vector)
+    ball_position = planar.Vec2(data.ball_x,data.ball_y)
+
+    t_x_pos = (0.65 - ball_position.x)/speed_vector.x
+    t_y_pos = (0.75 - ball_position.y)/speed_vector.y
+    t_x_neg = (-0.65 - ball_position.x)/speed_vector.x
+    t_y_neg = (-0.75 - ball_position.y)/speed_vector.y
+
+    time_list = [(t_x_pos),(t_y_pos),(t_x_neg),(t_y_neg)]
+    time = min([i for i in time_list if i>0])
+
+    walls_y = speed_vector.y * time + ball_position.y
+    walls_x = speed_vector.x * time + ball_position.x
+    return walls_x,walls_y
 
 def movingAvg(data):
     alpha = 0.4
@@ -53,7 +73,7 @@ def ballPredictor(data):
     vel_y_data = estimation.ball_y - prev_estimation.ball_y
 
     vel_x = (1-beta)*vel_x_data + (beta)*vel_x
-    vel_y = (1-beta)*vel_y_data + (beta)*vel_y 
+    vel_y = (1-beta)*vel_y_data + (beta)*vel_y
 
     estimation.ball_x_pred = 0.1*(estimation.ball_x + vel_x*k) + 0.9*(data.ball_x)
     estimation.ball_y_pred = 0.1*(estimation.ball_y + vel_y*k) + 0.9*(data.ball_y)
@@ -68,7 +88,7 @@ def unityGain(data):
     estimation.ball_x = data.ball_x
     estimation.ball_y = data.ball_y
     estimation.ball_x_pred = data.ball_x
-    estimation.ball_y_pred = data.ball_y
+    estimation.ball_y_pred = data.ball_y_pred
 
 
 def start():
