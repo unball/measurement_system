@@ -38,18 +38,43 @@ def wallsPrediction(data):
     speed_vector = planar.Vec2(estimation.ball_x_pred - data.ball_x,estimation.ball_y_pred - data.ball_y)
     speed_vector = planar.Vec2.normalized(speed_vector)
     ball_position = planar.Vec2(data.ball_x,data.ball_y)
+    
+    if speed_vector.x != 0 and speed_vector.y != 0:
+        t_x_pos = (0.65 - ball_position.x)/speed_vector.x
+        t_y_pos = (0.75 - ball_position.y)/speed_vector.y
+        t_x_neg = (-0.65 - ball_position.x)/speed_vector.x
+        t_y_neg = (-0.75 - ball_position.y)/speed_vector.y
 
-    t_x_pos = (0.65 - ball_position.x)/speed_vector.x
-    t_y_pos = (0.75 - ball_position.y)/speed_vector.y
-    t_x_neg = (-0.65 - ball_position.x)/speed_vector.x
-    t_y_neg = (-0.75 - ball_position.y)/speed_vector.y
+        time_list = [(t_x_pos),(t_y_pos),(t_x_neg),(t_y_neg)]   
+        time = min([i for i in time_list if i>0])
 
-    time_list = [(t_x_pos),(t_y_pos),(t_x_neg),(t_y_neg)]
-    time = min([i for i in time_list if i>0])
+        walls_y = speed_vector.y * time + ball_position.y
+        walls_x = speed_vector.x * time + ball_position.x
 
-    walls_y = speed_vector.y * time + ball_position.y
-    walls_x = speed_vector.x * time + ball_position.x
-    return walls_x,walls_y
+    elif speed_vector.x != 0:
+        t_x_pos = (0.65 - ball_position.x)/speed_vector.x
+        t_x_neg = (-0.65 - ball_position.x)/speed_vector.x
+
+        time_list = [(t_x_pos),(t_x_neg)]   
+        time = min([i for i in time_list if i>0])
+        walls_y = ball_position.y
+        walls_x = ball_position.x + speed_vector.y * time
+
+    elif speed_vector.y != 0:
+        t_y_pos = (0.75 - ball_position.x)/speed_vector.x
+        t_y_neg = (-0.75 - ball_position.x)/speed_vector.x
+
+        time_list = [(t_y_pos),(t_y_neg)]   
+        time = min([i for i in time_list if i>0])
+        walls_x = ball_position.x
+        walls_y = ball_position.y + speed_vector.y * time
+    else:
+        walls_x = 0
+        walls_y = 0
+
+    return walls_x,walls_y       
+
+
 
 def movingAvg(data):
     alpha = 0.4
