@@ -39,7 +39,7 @@ def wallsPrediction(data):
     speed_vector = planar.Vec2.normalized(speed_vector)
     ball_position = planar.Vec2(data.ball_x,data.ball_y)
     
-    if speed_vector.x != 0 and speed_vector.y != 0:
+    if (speed_vector.x != 0) and (speed_vector.y != 0):
         t_x_pos = (0.65 - ball_position.x)/speed_vector.x
         t_y_pos = (0.75 - ball_position.y)/speed_vector.y
         t_x_neg = (-0.65 - ball_position.x)/speed_vector.x
